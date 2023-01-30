@@ -16,8 +16,8 @@ func New(csvWriterInfo <-chan CSVWriterInfo, bucketName string, csvFile io.Write
 }
 
 type CSVWriterInfo struct {
-	FileName string
-	Label    string
+	Key   string
+	Label string
 }
 
 type writerImpl struct {
@@ -30,7 +30,7 @@ func (w *writerImpl) Run() {
 	writer := csv.NewWriter(w.csvFile)
 	defer writer.Flush()
 	for info := range w.csvWriterInfo {
-		path := fmt.Sprintf("gs://%s/%s", w.bucketName, info.FileName)
+		path := fmt.Sprintf("gs://%s/%s", w.bucketName, info.Key)
 		data := []string{path, info.Label}
 		if err := writer.Write(data); err != nil {
 			log.Fatalf("failed to write CSV file; %v", err.Error())

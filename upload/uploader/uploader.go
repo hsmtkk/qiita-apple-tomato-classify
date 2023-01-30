@@ -42,11 +42,12 @@ func (u *uploaderImpl) Run() {
 	bucket := client.Bucket(u.bucketName)
 	for info := range u.uploaderInfo {
 		fileName := filepath.Base(info.FilePath)
-		obj := bucket.Object(fileName)
+		key := fmt.Sprintf("%s/%s", u.label, fileName)
+		obj := bucket.Object(key)
 		if err := u.upload(ctx, obj, info.FilePath); err != nil {
 			log.Fatal(err)
 		}
-		u.csvWriterInfo <- csvwriter.CSVWriterInfo{FileName: fileName, Label: u.label}
+		u.csvWriterInfo <- csvwriter.CSVWriterInfo{Key: key, Label: u.label}
 	}
 }
 

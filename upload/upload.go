@@ -58,9 +58,8 @@ func process(imgDir, bucketName, label string, csvFile io.Writer) error {
 }
 
 func run(cmd *cobra.Command, args []string) {
-	applesBucket := args[0]
-	tomatoesBucket := args[1]
-	csvPath := args[2]
+	datasetBucket := args[0]
+	csvPath := args[1]
 
 	csvFile, err := os.Create(csvPath)
 	if err != nil {
@@ -68,18 +67,18 @@ func run(cmd *cobra.Command, args []string) {
 	}
 	defer csvFile.Close()
 
-	if err := process(filepath.Join(trainDir, "apples"), applesBucket, "apple", csvFile); err != nil {
+	if err := process(filepath.Join(trainDir, "apples"), datasetBucket, "apple", csvFile); err != nil {
 		log.Fatal(err)
 	}
-	if err := process(filepath.Join(trainDir, "tomatoes"), tomatoesBucket, "tomato", csvFile); err != nil {
+	if err := process(filepath.Join(trainDir, "tomatoes"), datasetBucket, "tomato", csvFile); err != nil {
 		log.Fatal(err)
 	}
 }
 
 func main() {
 	cmd := &cobra.Command{
-		Use:  "upload applesBucket tomatoesBucket csvPath",
-		Args: cobra.ExactArgs(1),
+		Use:  "upload datasetBucket csvPath",
+		Args: cobra.ExactArgs(2),
 		Run:  run,
 	}
 	if err := cmd.Execute(); err != nil {

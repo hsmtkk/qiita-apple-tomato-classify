@@ -19,31 +19,31 @@ class MyStack extends TerraformStack {
     });
 
     const assetBucket = new google.storageBucket.StorageBucket(this, 'assetBucket', {
+      forceDestroy: true,
       location: region,
       name: `asset-bucket-${project}`,
     });
 
     new google.storageBucket.StorageBucket(this, 'datasetAppleBucket', {
+      forceDestroy: true,
       location: region,
-      name: `dataset-apple-bucket-${project}`,
-    });
-
-    new google.storageBucket.StorageBucket(this, 'datasetTomatoBucket', {
-      location: region,
-      name: `dataset-tomato-bucket-${project}`,
+      name: `dataset-bucket-${project}`,
     });
 
     const srcBucket = new google.storageBucket.StorageBucket(this, 'srcBucket', {
+      forceDestroy: true,
       location: region,
       name: `src-bucket-${project}`,
     });
 
     const dstAppleBucket = new google.storageBucket.StorageBucket(this, 'dstAppleBucket', {
+      forceDestroy: true,
       location: region,
       name: `dst-apple-bucket-${project}`,
     });
 
     const dstTomatoBucket = new google.storageBucket.StorageBucket(this, 'dstTomatoBucket', {
+      forceDestroy: true,
       location: region,
       name: `dst-tomato-bucket-${project}`,
     });
@@ -89,6 +89,8 @@ class MyStack extends TerraformStack {
       name: 'classify',
       serviceConfig: {
         environmentVariables: {
+          'PROJECT_ID': project,
+          'ENDPOINT_ID': '6324377688828018688',
           'DST_APPLE_BUCKET': dstAppleBucket.name,
           'DST_TOMATO_BUCKET': dstTomatoBucket.name,
         },
